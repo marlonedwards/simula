@@ -2,39 +2,30 @@
 version = 1
 
 [[package]]
-name = "achievement"
-version = "0.0.0"
-source = "git+https://github.com/cartridge-gg/arcade?branch=main#5268dc0b2c36224659413c868e5d880d25dcb54f"
+name = "dojo"
+version = "1.7.1"
+source = "git+https://github.com/dojoengine/dojo?tag=v1.7.1#cb78e550220e52bad4e4c940b20699dc6e98f7e4"
 dependencies = [
- "dojo",
+ "dojo_cairo_macros",
 ]
 
 [[package]]
-name = "dojo"
-version = "1.5.0"
-source = "git+https://github.com/dojoengine/dojo?tag=v1.5.0#812f17c9c57fd057d0bf1e648a591ea0ca9ea718"
-dependencies = [
- "dojo_plugin",
-]
+name = "dojo_cairo_macros"
+version = "1.7.1"
+source = "git+https://github.com/dojoengine/dojo?tag=v1.7.1#cb78e550220e52bad4e4c940b20699dc6e98f7e4"
 
 [[package]]
 name = "dojo_cairo_test"
-version = "1.0.12"
-source = "git+https://github.com/dojoengine/dojo?tag=v1.5.0#812f17c9c57fd057d0bf1e648a591ea0ca9ea718"
+version = "1.7.1"
+source = "git+https://github.com/dojoengine/dojo?tag=v1.7.1#cb78e550220e52bad4e4c940b20699dc6e98f7e4"
 dependencies = [
  "dojo",
 ]
 
 [[package]]
-name = "dojo_plugin"
-version = "2.10.1"
-source = "git+https://github.com/dojoengine/dojo?tag=v1.5.0#812f17c9c57fd057d0bf1e648a591ea0ca9ea718"
-
-[[package]]
-name = "full_starter_react"
+name = "simula"
 version = "0.1.0"
 dependencies = [
- "achievement",
  "dojo",
  "dojo_cairo_test",
 ]

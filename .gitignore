@@ -1,0 +1,88 @@
+# Environment variables and secrets
+.env
+.env.local
+.env.development
+.env.production
+*.toml
+!Scarb.toml
+
+# Private keys and sensitive files
+*.keystore
+*.pem
+private_key*
+account.json
+
+# IDE and Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Claude AI
+.claude/
+
+# GitHub workflows (may contain secrets)
+.github/
+
+# Markdown files (except README)
+*.md
+!README.md
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+*.lcov
+.nyc_output
+
+# Production builds
+dist/
+build/
+out/
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Cairo/Starknet
+target/
+Scarb.lock
+manifest*.json
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Rust
+**/target/
+**/*.rs.bk
+Cargo.lock
+
+# Logs
+logs/
+*.log

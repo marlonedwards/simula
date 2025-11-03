@@ -1,9 +1,9 @@
 {
   "world": {
-    "class_hash": "0x7c9469d45a9cdbab775035afb48e1fa73fb35ab059fcb9dfb0a301aa973e783",
-    "address": "0x5516189bb610e29f63833042eda4a7e5357569c094c1b8eed499930dd51da9",
-    "seed": "seed123",
-    "name": "Full-Starter-React",
+    "class_hash": "0x57994b6a75fad550ca18b41ee82e2110e158c59028c4478109a67965a0e5b1e",
+    "address": "0x6aa900adb298c2b4fd068199baab902d1d90a40483b53e03fa4e1dedb6fe2da",
+    "seed": "simula_v1",
+    "name": "Simula",
     "entrypoints": [
       "uuid",
       "set_metadata",
@@ -11,11 +11,13 @@
       "register_event",
       "register_model",
       "register_contract",
+      "register_external_contract",
       "register_library",
       "init_contract",
       "upgrade_event",
       "upgrade_model",
       "upgrade_contract",
+      "upgrade_external_contract",
       "emit_event",
       "emit_events",
       "set_entity",
@@ -83,6 +85,10 @@
           {
             "name": "Library",
             "type": "(core::starknet::class_hash::ClassHash, core::felt252)"
+          },
+          {
+            "name": "ExternalContract",
+            "type": "(core::starknet::contract_address::ContractAddress, core::felt252)"
           }
         ]
       },
@@ -213,6 +219,10 @@
           {
             "name": "Enum",
             "type": "core::array::Span::<dojo::meta::layout::FieldLayout>"
+          },
+          {
+            "name": "FixedArray",
+            "type": "(core::array::Span::<dojo::meta::layout::Layout>, core::integer::u32)"
           }
         ]
       },
@@ -369,6 +379,34 @@
           },
           {
             "type": "function",
+            "name": "register_external_contract",
+            "inputs": [
+              {
+                "name": "namespace",
+                "type": "core::byte_array::ByteArray"
+              },
+              {
+                "name": "contract_name",
+                "type": "core::byte_array::ByteArray"
+              },
+              {
+                "name": "instance_name",
+                "type": "core::byte_array::ByteArray"
+              },
+              {
+                "name": "contract_address",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "block_number",
+                "type": "core::integer::u64"
+              }
+            ],
+            "outputs": [],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
             "name": "register_library",
             "inputs": [
               {
@@ -461,6 +499,30 @@
                 "type": "core::starknet::class_hash::ClassHash"
               }
             ],
+            "state_mutability": "external"
+          },
+          {
+            "type": "function",
+            "name": "upgrade_external_contract",
+            "inputs": [
+              {
+                "name": "namespace",
+                "type": "core::byte_array::ByteArray"
+              },
+              {
+                "name": "instance_name",
+                "type": "core::byte_array::ByteArray"
+              },
+              {
+                "name": "contract_address",
+                "type": "core::starknet::contract_address::ContractAddress"
+              },
+              {
+                "name": "block_number",
+                "type": "core::integer::u64"
+              }
+            ],
+            "outputs": [],
             "state_mutability": "external"
           },
           {
@@ -693,6 +755,22 @@
           },
           {
             "type": "function",
+            "name": "owners_count",
+            "inputs": [
+              {
+                "name": "resource",
+                "type": "core::felt252"
+              }
+            ],
+            "outputs": [
+              {
+                "type": "core::integer::u64"
+              }
+            ],
+            "state_mutability": "view"
+          },
+          {
+            "type": "function",
             "name": "is_writer",
             "inputs": [
               {
@@ -906,6 +984,85 @@
           {
             "name": "salt",
             "type": "core::felt252",
+            "kind": "data"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "dojo::world::world_contract::world::ExternalContractRegistered",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "namespace",
+            "type": "core::byte_array::ByteArray",
+            "kind": "key"
+          },
+          {
+            "name": "contract_name",
+            "type": "core::byte_array::ByteArray",
+            "kind": "key"
+          },
+          {
+            "name": "instance_name",
+            "type": "core::byte_array::ByteArray",
+            "kind": "key"
+          },
+          {
+            "name": "contract_selector",
+            "type": "core::felt252",
+            "kind": "key"
+          },
+          {
+            "name": "class_hash",
+            "type": "core::starknet::class_hash::ClassHash",
+            "kind": "data"
+          },
+          {
+            "name": "contract_address",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "data"
+          },
+          {
+            "name": "block_number",
+            "type": "core::integer::u64",
+            "kind": "data"
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "name": "dojo::world::world_contract::world::ExternalContractUpgraded",
+        "kind": "struct",
+        "members": [
+          {
+            "name": "namespace",
+            "type": "core::byte_array::ByteArray",
+            "kind": "key"
+          },
+          {
+            "name": "instance_name",
+            "type": "core::byte_array::ByteArray",
+            "kind": "key"
+          },
+          {
+            "name": "contract_selector",
+            "type": "core::felt252",
+            "kind": "key"
+          },
+          {
+            "name": "class_hash",
+            "type": "core::starknet::class_hash::ClassHash",
+            "kind": "data"
+          },
+          {
+            "name": "contract_address",
+            "type": "core::starknet::contract_address::ContractAddress",
+            "kind": "data"
+          },
+          {
+            "name": "block_number",
+            "type": "core::integer::u64",
             "kind": "data"
           }
         ]
@@ -1242,6 +1399,16 @@
             "kind": "nested"
           },
           {
+            "name": "ExternalContractRegistered",
+            "type": "dojo::world::world_contract::world::ExternalContractRegistered",
+            "kind": "nested"
+          },
+          {
+            "name": "ExternalContractUpgraded",
+            "type": "dojo::world::world_contract::world::ExternalContractUpgraded",
+            "kind": "nested"
+          },
+          {
             "name": "ModelUpgraded",
             "type": "dojo::world::world_contract::world::ModelUpgraded",
             "kind": "nested"
@@ -1312,12 +1479,12 @@
   },
   "contracts": [
     {
-      "address": "0x77caaa4b20ff379234a40c945b397aebbff866d623e31c7c1e44df6fc63f9ce",
-      "class_hash": "0x67b9e060cb1caebf64f45a92c40028de885535c4ced3178656c4e5c3c171286",
+      "address": "0x6cee424a3a9bc50a46acc8df7b49d19e7c1f690f704fd8931c1821053b83606",
+      "class_hash": "0x4ceb9f75ed3331c13bbf467e69e9e7054eb03f19a028cc492285aece7be3cfb",
       "abi": [
         {
           "type": "impl",
-          "name": "game__ContractImpl",
+          "name": "city__ContractImpl",
           "interface_name": "dojo::contract::interface::IContract"
         },
         {
@@ -1327,7 +1494,7 @@
         },
         {
           "type": "impl",
-          "name": "game__DeployedContractImpl",
+          "name": "DojoDeployedContractImpl",
           "interface_name": "dojo::meta::interface::IDeployedResource"
         },
         {
@@ -1374,40 +1541,160 @@
         },
         {
           "type": "impl",
-          "name": "GameImpl",
-          "interface_name": "full_starter_react::systems::game::IGame"
+          "name": "CityImpl",
+          "interface_name": "simula::systems::city::ICity"
+        },
+        {
+          "type": "struct",
+          "name": "core::integer::u256",
+          "members": [
+            {
+              "name": "low",
+              "type": "core::integer::u128"
+            },
+            {
+              "name": "high",
+              "type": "core::integer::u128"
+            }
+          ]
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
         },
         {
           "type": "interface",
-          "name": "full_starter_react::systems::game::IGame",
+          "name": "simula::systems::city::ICity",
           "items": [
             {
               "type": "function",
-              "name": "spawn_player",
-              "inputs": [],
+              "name": "generate_map",
+              "inputs": [
+                {
+                  "name": "width",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "height",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "seed",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u32"
+                }
+              ],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "claim_plot",
+              "inputs": [
+                {
+                  "name": "map_id",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "x",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "y",
+                  "type": "core::integer::u32"
+                }
+              ],
               "outputs": [],
               "state_mutability": "external"
             },
             {
               "type": "function",
-              "name": "train",
-              "inputs": [],
+              "name": "build_structure",
+              "inputs": [
+                {
+                  "name": "map_id",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "building_type",
+                  "type": "core::integer::u8"
+                },
+                {
+                  "name": "x",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "y",
+                  "type": "core::integer::u32"
+                }
+              ],
               "outputs": [],
               "state_mutability": "external"
             },
             {
               "type": "function",
-              "name": "mine",
-              "inputs": [],
+              "name": "collect_resources",
+              "inputs": [
+                {
+                  "name": "map_id",
+                  "type": "core::integer::u32"
+                }
+              ],
               "outputs": [],
               "state_mutability": "external"
             },
             {
               "type": "function",
-              "name": "rest",
-              "inputs": [],
-              "outputs": [],
-              "state_mutability": "external"
+              "name": "get_map",
+              "inputs": [
+                {
+                  "name": "map_id",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "(core::integer::u32, core::integer::u32, core::integer::u32, core::integer::u256)"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_tile",
+              "inputs": [
+                {
+                  "name": "map_id",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "x",
+                  "type": "core::integer::u32"
+                },
+                {
+                  "name": "y",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "(core::integer::u8, core::integer::u8, core::bool, core::bool, core::bool)"
+                }
+              ],
+              "state_mutability": "view"
             }
           ]
         },
@@ -1503,13 +1790,115 @@
         },
         {
           "type": "event",
-          "name": "achievement::components::achievable::AchievableComponent::Event",
-          "kind": "enum",
-          "variants": []
+          "name": "simula::systems::city::city::MapGenerated",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "map_id",
+              "type": "core::integer::u32",
+              "kind": "data"
+            },
+            {
+              "name": "width",
+              "type": "core::integer::u32",
+              "kind": "data"
+            },
+            {
+              "name": "height",
+              "type": "core::integer::u32",
+              "kind": "data"
+            },
+            {
+              "name": "admin",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "data"
+            }
+          ]
         },
         {
           "type": "event",
-          "name": "full_starter_react::systems::game::game::Event",
+          "name": "simula::systems::city::city::PlotClaimed",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "map_id",
+              "type": "core::integer::u32",
+              "kind": "data"
+            },
+            {
+              "name": "x",
+              "type": "core::integer::u32",
+              "kind": "data"
+            },
+            {
+              "name": "y",
+              "type": "core::integer::u32",
+              "kind": "data"
+            },
+            {
+              "name": "owner",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "simula::systems::city::city::BuildingConstructed",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "building_id",
+              "type": "core::integer::u32",
+              "kind": "data"
+            },
+            {
+              "name": "owner",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "data"
+            },
+            {
+              "name": "building_type",
+              "type": "core::integer::u8",
+              "kind": "data"
+            },
+            {
+              "name": "x",
+              "type": "core::integer::u32",
+              "kind": "data"
+            },
+            {
+              "name": "y",
+              "type": "core::integer::u32",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "simula::systems::city::city::ResourcesCollected",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "player",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "data"
+            },
+            {
+              "name": "energy",
+              "type": "core::integer::u32",
+              "kind": "data"
+            },
+            {
+              "name": "water",
+              "type": "core::integer::u32",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "simula::systems::city::city::Event",
           "kind": "enum",
           "variants": [
             {
@@ -1523,22 +1912,37 @@
               "kind": "nested"
             },
             {
-              "name": "AchievableEvent",
-              "type": "achievement::components::achievable::AchievableComponent::Event",
-              "kind": "flat"
+              "name": "MapGenerated",
+              "type": "simula::systems::city::city::MapGenerated",
+              "kind": "nested"
+            },
+            {
+              "name": "PlotClaimed",
+              "type": "simula::systems::city::city::PlotClaimed",
+              "kind": "nested"
+            },
+            {
+              "name": "BuildingConstructed",
+              "type": "simula::systems::city::city::BuildingConstructed",
+              "kind": "nested"
+            },
+            {
+              "name": "ResourcesCollected",
+              "type": "simula::systems::city::city::ResourcesCollected",
+              "kind": "nested"
             }
           ]
         }
       ],
       "init_calldata": [],
-      "tag": "full_starter_react-game",
-      "selector": "0x4c3a60c69390276b1cdfe902f6305743f3668c5ab9e68a96105dea78d8ccd61",
+      "tag": "simula-city",
+      "selector": "0x55f8b61952f6257ad254c10d5dbacbc79a956a368d19653134e6ef11bf372e2",
       "systems": [
         "dojo_init",
-        "spawn_player",
-        "train",
-        "mine",
-        "rest",
+        "generate_map",
+        "claim_plot",
+        "build_structure",
+        "collect_resources",
         "upgrade"
       ]
     }
@@ -1547,24 +1951,35 @@
   "models": [
     {
       "members": [],
-      "class_hash": "0x3e7c43dd72bf94383e02e0f02b9a9d760db99bf8568acfba417afd146c9646e",
-      "tag": "full_starter_react-Player",
-      "selector": "0x13986cc36a0f8437378d1efa3068103f37b22361ff3cc31be99d50ddf2e4187"
-    }
-  ],
-  "events": [
-    {
-      "members": [],
-      "class_hash": "0x19a5c06b3a8417ff3f9883be3acb0e33c835795bd81fb87a5a47e6ed7d2d3af",
-      "tag": "full_starter_react-TrophyCreation",
-      "selector": "0x3ee5e843803cc1ec151088d980d09c665c10f9282fea6204ebec09706791977"
+      "class_hash": "0x36d700d51f4bc2f849f6c17936e22f45daea43fe36687c4f89424b767c8bb51",
+      "tag": "simula-Building",
+      "selector": "0x2fdb35de41e63d8fceffc058e99a73c3f9066592b51b16b84ec42926ca09b02"
     },
     {
       "members": [],
-      "class_hash": "0x1922d2cd8b63eccf66321673234a52126cd9f0ab1bf6298c5abee6ee80c8990",
-      "tag": "full_starter_react-TrophyProgression",
-      "selector": "0x6f15029fdaa4c14b9f4690bad922d22e5646466e5fe4c688e633d67028b68d8"
+      "class_hash": "0x667e66564b1a58cba349968a4710bfde13da23b9cddd5dc142aea488ec4bcbb",
+      "tag": "simula-CityPlayer",
+      "selector": "0x3f1957f6dfeb502d5cce272fb4df482ab8b955c91b59226d248bb3a25078467"
+    },
+    {
+      "members": [],
+      "class_hash": "0x54744055881d95f1c27072fcec980f19dd89bd9a5f0871795d356cd0dd35638",
+      "tag": "simula-Map",
+      "selector": "0x5426273e9f7a7620e6cf06e656a0038fa689e6da40ec3af298f7fe54cd19163"
+    },
+    {
+      "members": [],
+      "class_hash": "0x5d66a52cb2042521f40c7676c3fe9cdd7c32bec58cb762814936517dd831fa3",
+      "tag": "simula-Plot",
+      "selector": "0x50ec42b0dfce7f87a804eb53c3c04aa6d6c6bebb053afb15bc78323de0aeba2"
+    },
+    {
+      "members": [],
+      "class_hash": "0x29a3fa206071a4117ff3f6083d48387fb0565c2a3869e221cd4e7cdd6825cd0",
+      "tag": "simula-Tile",
+      "selector": "0x68274f108ec08220c0e14306eb9a75326c09ac911fcdc9a55da2bedb2c446a1"
     }
   ],
+  "events": [],
   "external_contracts": []
 }

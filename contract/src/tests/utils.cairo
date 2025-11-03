@@ -11,10 +11,10 @@ pub mod utils {
     };
 
     // System imports
-    use full_starter_react::systems::game::{game, IGameDispatcher};
+    use simula::systems::game::{game, IGameDispatcher};
 
     // Models imports
-    use full_starter_react::models::player::{m_Player};
+    use simula::models::player::{m_Player};
 
     // ------- Constants -------
     pub fn PLAYER() -> ContractAddress {
@@ -24,7 +24,7 @@ pub mod utils {
      // ------- Definitions -------
     pub fn namespace_def() -> NamespaceDef {
         let ndef = NamespaceDef {
-            namespace: "full_starter_react",
+            namespace: "simula",
             resources: [
                 TestResource::Model(m_Player::TEST_CLASS_HASH),
                 TestResource::Event(achievement::events::index::e_TrophyCreation::TEST_CLASS_HASH),
@@ -38,8 +38,8 @@ pub mod utils {
 
     pub fn contract_defs() -> Span<ContractDef> {
         [
-            ContractDefTrait::new(@"full_starter_react", @"game")
-                .with_writer_of([dojo::utils::bytearray_hash(@"full_starter_react")].span()),
+            ContractDefTrait::new(@"simula", @"game")
+                .with_writer_of([dojo::utils::bytearray_hash(@"simula")].span()),
                 
         ]
             .span()

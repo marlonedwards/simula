@@ -2,15 +2,15 @@
 #[cfg(test)]
 mod tests {
     // Test utilities
-    use full_starter_react::tests::utils::utils::{
+    use simula::tests::utils::utils::{
         PLAYER, cheat_caller_address, create_game_system, create_test_world,
     };
     
     // System imports
-    use full_starter_react::systems::game::{IGameDispatcherTrait};
+    use simula::systems::game::{IGameDispatcherTrait};
     
     // Models imports
-    use full_starter_react::models::player::{Player};
+    use simula::models::player::{Player};
     
     // Dojo imports
     #[allow(unused_imports)]

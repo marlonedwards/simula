@@ -1,15 +1,15 @@
 [world]
-name = "Full-Starter-React"
-description = "Full Starter React is a template project to be used for other devs to quickly learn how to use the controller, achievements, backend and its integration. Built using Dojo Engine and Cartridge Controller on Starknet."
-seed = "seed123"
+name = "Simula"
+description = "Simula - An 8-bit city builder civilization game with Clash of Clans mechanics. Build gold mines, manage resources, and watch your city grow in real-time. Built on Starknet with Dojo Engine."
+seed = "simula_v1"
 
 [namespace]
-default = "full_starter_react"
+default = "simula"
 
 [env]
-rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
+rpc_url = "https://starknet-sepolia.g.alchemy.com/starknet/version/rpc/v0_9/inz6bqYQU44jLLFXVSBzKGyvHG48f3Iy"
+account_address = "0x0133fd6f7cc2af8117dd5ef08be2a9eb0404a33fd654d88237bb596c688934fb"
+private_key = "0x019aa8986c9ab4d440f042ebf9e135672f3dbbc2a28f4dedc417d800b43742ed"
 
 [writers]
-"full_starter_react" = ["full_starter_react-game"]
-"full_starter_react-TrophyCreation" = ["full_starter_react-game"]
-"full_starter_react-TrophyProgression" = ["full_starter_react-game"]
+"simula" = ["simula-city"]

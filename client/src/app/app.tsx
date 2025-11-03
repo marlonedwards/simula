@@ -1,7 +1,7 @@
-import HomePage from "../components/pages/HomeScreen";
+import CityBuilder from "../components/CityBuilder";
 
 function App() {
-  return <HomePage />;
+  return <CityBuilder />;
 }
 
 export default App;

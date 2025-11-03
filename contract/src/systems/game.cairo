@@ -14,16 +14,16 @@ pub mod game {
     use super::{IGame};
 
     // Achievement import
-    use full_starter_react::achievements::achievement::{Achievement, AchievementTrait};
+    use simula::achievements::achievement::{Achievement, AchievementTrait};
 
     // Store import
-    use full_starter_react::store::{StoreTrait};
+    use simula::store::{StoreTrait};
 
     // Constant import
-    use full_starter_react::constants;
+    use simula::constants;
 
     // Models import
-    use full_starter_react::models::player::{PlayerAssert};
+    use simula::models::player::{PlayerAssert};
 
     // Dojo achievements imports
     use achievement::components::achievable::AchievableComponent;
@@ -56,7 +56,7 @@ pub mod game {
 
     // Constructor
     fn dojo_init(ref self: ContractState) {
-        let mut world = self.world(@"full_starter_react");
+        let mut world = self.world(@"simula");
 
         let mut achievement_id: u8 = 1;
         while achievement_id <= constants::ACHIEVEMENTS_COUNT {
@@ -88,7 +88,7 @@ pub mod game {
         
         // Method to create a new player
         fn spawn_player(ref self: ContractState) {
-            let mut world = self.world(@"full_starter_react");
+            let mut world = self.world(@"simula");
             let store = StoreTrait::new(world);
 
             // Create new player
@@ -97,7 +97,7 @@ pub mod game {
 
         // Method to train player (+10 experience)
         fn train(ref self: ContractState) {
-            let mut world = self.world(@"full_starter_react");
+            let mut world = self.world(@"simula");
             let store = StoreTrait::new(world);
             let achievement_store = AchievementStoreTrait::new(world);
 
@@ -120,7 +120,7 @@ pub mod game {
 
         // Method to mine coins (+5 coins, -5 health)
         fn mine(ref self: ContractState) {
-            let mut world = self.world(@"full_starter_react");
+            let mut world = self.world(@"simula");
             let store = StoreTrait::new(world);
             let achievement_store = AchievementStoreTrait::new(world);
 
@@ -143,7 +143,7 @@ pub mod game {
 
         // Method to rest player (+20 health)
         fn rest(ref self: ContractState) {
-            let mut world = self.world(@"full_starter_react");
+            let mut world = self.world(@"simula");
             let store = StoreTrait::new(world);
             let achievement_store = AchievementStoreTrait::new(world);
 

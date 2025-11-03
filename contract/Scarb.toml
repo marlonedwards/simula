@@ -1,6 +1,6 @@
 [package]
-cairo-version = "2.10.1"
-name = "full_starter_react"
+cairo-version = "2.12.2"
+name = "simula"
 version = "0.1.0"
 edition = "2024_07"
 
@@ -11,18 +11,16 @@ sierra-replace-ids = true
 sepolia = "sozo --profile sepolia clean && sozo --profile sepolia build && sozo --profile sepolia migrate --account-address $DEPLOYER_ACCOUNT_ADDRESS --private-key $DEPLOYER_PRIVATE_KEY --fee strk"
 
 [dependencies]
-dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.5.0" }
-achievement = { git = "https://github.com/cartridge-gg/arcade", branch = "main" }
+starknet = "2.12.2"
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.7.1" }
 
 [[target.starknet-contract]]
 build-external-contracts = [
     "dojo::world::world_contract::world",
-    "achievement::events::index::e_TrophyCreation",
-    "achievement::events::index::e_TrophyProgression",
 ]
 
 [dev-dependencies]
-cairo_test = "2.10.1"
-dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.5.0" }
+cairo_test = "2.12.2"
+dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.7.1" }
 
 [profile.sepolia]

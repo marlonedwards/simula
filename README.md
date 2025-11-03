@@ -1,146 +1,206 @@
-# 🎮 Dojo Game Starter
+# Simula - 8-bit City Builder on Starknet
 
-> **The fastest way to build onchain games on Starknet**
-> From zero to deployed in 5 minutes ⚡
+A fully onchain city builder civilization game where players claim plots, construct buildings, and manage resources. Build gold mines, watch your city grow in real-time with Clash of Clans-style mechanics.
 
-<div align="center">
-  <img src="./client/src/assets/Dojo-Logo-Stylized-Red.svg" alt="Dojo Engine" height="60"/>
-  &nbsp;&nbsp;&nbsp;
-  <img src="./client/src/assets/DojoByExample_logo.svg" alt="Dojo by Example" height="60"/>
-  &nbsp;&nbsp;&nbsp;
-  <img src="./client/src/assets/SN-Linear-Gradient.svg" alt="Starknet" height="60"/>
-</div>
+## Game Features
 
-## ✨ What's Included
+- **Real-time Resource Generation**: Clash of Clans-style passive income based on elapsed time
+- **Offline Progress**: Buildings keep producing while you're away
+- **5 Building Types**: Gold Mines ($100/hr), Energy Plants, Water Extractors, Habitats, Iron Mines
+- **Live Counters**: Watch resources tick up every second on screen
+- **Procedural Maps**: Unique terrain with water, mountains, forests, and resource deposits
+- **localStorage Persistence**: Instant feedback with client-side state management
+- **Fully Onchain**: All game logic secured by Cairo smart contracts on Starknet
 
-**🎨 Frontend Ready**
-- React + Vite + TypeScript with complete Dojo integration
-- Cartridge Controller wallet integration with session policies
-- Real-time game UI with optimistic updates
-- Comprehensive hooks for blockchain operations
+## Tech Stack
 
-**⚙️ Backend Complete**
-- Cairo smart contracts with Dojo Engine architecture
-- Player progression system with experience, health, and coins
-- Integrated achievement system with 5+ achievements
-- Production-ready deployment configuration
+- **Smart Contracts**: Cairo 2.12.2 + Dojo 1.7.1
+- **Frontend**: React + TypeScript + Vite
+- **Wallet**: ArgentX / Braavos
+- **Blockchain**: Starknet Sepolia Testnet
 
-## 🛠️ Tech Stack
+## Game Mechanics
+
+### Starting Out
+- Connect with ArgentX or Braavos wallet on Starknet Sepolia
+- Start with $1000 balance when claiming first plot
+- Select buildable terrain (not water) to claim your plot
+
+### Buildings
+
+| Building | Cost | Production |
+|----------|------|------------|
+| Gold Mine | $500 | $100/hour |
+| Energy Plant | $300 | 50 energy/hour |
+| Water Extractor | $300 | 50 water/hour |
+| Habitat | $400 | +50 population capacity |
+| Iron Mine | $350 | 20 iron/hour |
+
+### Two-Layer Architecture
+
+**Client-Side (Instant)**
+- Resources update every second locally
+- localStorage saves progress across sessions
+- Offline progress calculated when you return
+- No waiting for blockchain confirmations
+
+**Blockchain (Secure)**
+- Click "Sync with Blockchain" to commit state
+- Contract validates time elapsed using timestamps
+- Only real time earns real rewards (anti-cheat)
+- All game state permanently stored onchain
+
+## Quick Start
+
+### Prerequisites
+- [Dojo 1.7.1](https://book.dojoengine.org/getting-started/quick-start.html)
+- [Scarb](https://docs.swmansion.com/scarb/) (Cairo package manager)
+- [Node.js](https://nodejs.org/) v18+
+- [Starknet wallet](https://www.argent.xyz/argent-x/) (ArgentX or Braavos)
+
+### Local Development
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/simula.git
+cd simula
+
+# Build contracts
+cd contract
+sozo build
+
+# Deploy to local Katana (Terminal 1)
+katana --disable-fee
+
+# Deploy contracts (Terminal 2)
+sozo migrate
+
+# Start frontend (Terminal 3)
+cd ../client
+npm install
+npm run dev
+```
+
+## Deployed Contracts (Sepolia)
+
+- **World Address**: `0x06aa900adb298c2b4fd068199baab902d1d90a40483b53e03fa4e1dedb6fe2da`
+- **City System**: `0x6cee424a3a9bc50a46acc8df7b49d19e7c1f690f704fd8931c1821053b83606`
+- **Network**: Starknet Sepolia Testnet
+- **RPC**: Alchemy Sepolia
+
+## Project Structure
 
 ```
-Frontend: React + Vite + TypeScript + TailwindCSS + Zustand
-Backend:  Cairo + Dojo Engine + Torii GraphQL Indexer
-Network:  Starknet (Local/Sepolia/Mainnet)
-Wallet:   Cartridge Controller
-```
-
-## 📦 Project Structure
-
-```
-dojo-game-starter/
-├── 📱 client/                    # Complete React + Dojo integration
-│   ├── src/dojo/                 # Core Dojo integration files
-│   │   ├── bindings.ts           # TypeScript interfaces from Cairo
-│   │   ├── dojoConfig.ts         # Network and connection configuration
-│   │   ├── contracts.gen.ts      # Auto-generated contract functions
-│   │   └── hooks/                # Custom React hooks for blockchain
-│   ├── docs/                     # 📚 Complete integration documentation
-│   └── README.md                 # Frontend-specific documentation
-├── ⚙️ contract/                 # Cairo smart contracts
+simula/
+├── contract/              # Cairo smart contracts
 │   ├── src/
-│   │   ├── models/               # Data entities (Player model)
-│   │   ├── systems/              # Game logic (train, mine, rest)
-│   │   ├── achievements/         # Achievement system implementation
-│   │   └── store/                # Data layer abstraction
-│   └── README.md                 # Backend development and deployment guide
-└── tests/                        # Integration tests
+│   │   ├── models/       # Game data models
+│   │   │   ├── map.cairo
+│   │   │   ├── tile.cairo
+│   │   │   ├── plot.cairo
+│   │   │   ├── city_player.cairo
+│   │   │   └── building.cairo
+│   │   ├── systems/      # Game logic
+│   │   │   └── city.cairo
+│   │   └── lib.cairo
+│   ├── Scarb.toml
+│   └── dojo_dev.toml
+│
+├── client/               # React frontend
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── CityBuilder.tsx    # Main game component
+│   │   │   ├── MapGrid.tsx        # Map tile grid
+│   │   │   ├── BuildingPanel.tsx  # Building menu
+│   │   │   └── ResourcePanel.tsx  # Live resource counters
+│   │   ├── utils/
+│   │   │   └── resourceCalculator.ts  # Offline progress logic
+│   │   └── main.tsx
+│   └── package.json
+│
+└── README.md
 ```
 
-## 📚 Documentation
+## Smart Contract Functions
 
-### **🎨 Frontend Integration**
-The `client/` directory contains a complete React + Dojo integration with comprehensive documentation:
+### Admin Functions
+```cairo
+// Generate map (admin only)
+fn generate_map(width: u32, height: u32, seed: u256) -> u32
+```
 
-📖 **[Client Documentation](./client/README.md)** - Start here for frontend development
+### Player Functions
+```cairo
+// Claim a plot
+fn claim_plot(map_id: u32, x: u32, y: u32)
 
-**Complete Integration Guide Series:**
-- **[01. Overview](./client/docs/01-overview.md)** - Architecture and concepts
-- **[02. Architecture](./client/docs/02-architecture.md)** - System design patterns
-- **[03. Core Files](./client/docs/03-core-files.md)** - Essential integration files
-- **[04. Zustand State Management](./client/docs/04-zustand-state-management.md)** - Optimistic updates
-- **[05. Cartridge Controller](./client/docs/05-cartridge-controller.md)** - Gaming wallet UX
-- **[06. React Hooks Pattern](./client/docs/06-react-hooks-pattern.md)** - Blockchain hooks
-- **[07. Data Flow](./client/docs/07-data-flow.md)** - Request/response cycles
-- **[08. Extending the System](./client/docs/08-extending-system.md)** - Building your game
+// Build structure
+fn build_structure(map_id: u32, building_type: u8, x: u32, y: u32)
 
-### **⚙️ Backend Development**
-The `contract/` directory contains Cairo smart contracts with Dojo Engine:
+// Collect resources (syncs with blockchain)
+fn collect_resources(map_id: u32)
 
-📖 **[Contracts Documentation](./contract/README.md)** - Backend development guide
+// View functions
+fn get_map(map_id: u32) -> (u32, u32, u32, u256)
+fn get_tile(map_id: u32, x: u32, y: u32) -> (u8, u8, bool, bool, bool)
+```
 
-**Key Topics Covered:**
-- **Project Structure** - Models, Systems, Store architecture
-- **Game Mechanics** - Player actions (spawn, train, mine, rest)
-- **Achievement System** - Complete trophy/task implementation
-- **Local Development** - Katana, Sozo, Torii setup
-- **Sepolia Deployment** - Production deployment process
-- **Testing Strategy** - Integration tests and best practices
+## Documentation
 
-## 🎮 Game Mechanics
+- [Dojo Book](https://book.dojoengine.org) - Dojo framework documentation
+- [Cairo Documentation](https://book.cairo-lang.org/) - Cairo language guide
+- [Starknet Documentation](https://docs.starknet.io/) - Starknet network docs
 
-The starter demonstrates essential onchain game patterns:
+## Roadmap
 
-| Action | Effect | Demonstrates |
-|--------|--------|--------------|
-| 🏋️ **Train** | +10 Experience | Pure advancement mechanics |
-| ⛏️ **Mine** | +5 Coins, -5 Health | Risk/reward decision making |
-| 💤 **Rest** | +20 Health | Resource management systems |
+### Phase 1 - MVP (Current)
+- ✅ Core contracts (Map, Tile, Plot, CityPlayer, Building)
+- ✅ Procedural map generation with varied terrain
+- ✅ Time-based resource generation (Clash of Clans style)
+- ✅ Real-time counters with localStorage persistence
+- ✅ Offline progress calculation
+- ✅ Deployed to Sepolia testnet
+- ⏳ Wire frontend to deployed contracts
+- ⏳ Deploy frontend to Vercel
 
-**🏆 Achievement System:**
-- **MiniGamer** (1 action) → **SenseiGamer** (50 actions)
-- Complete integration with frontend achievement display
-- Automatic progress tracking for all game actions
+### Phase 2 - Enhanced Gameplay
+- [ ] Building upgrades (Level 2-5 with better rates)
+- [ ] Resource storage caps (prevent infinite accumulation)
+- [ ] Speedups (spend gems to instant-collect)
+- [ ] Production boosts (2x for 1 hour)
+- [ ] Multiple maps support
 
-## 🎯 Perfect For
+### Phase 3 - PvP & Social
+- [ ] Raiding mechanics (attack other players)
+- [ ] Defense buildings (walls, towers)
+- [ ] Player rankings and leaderboards
+- [ ] Alliances and clans
+- [ ] Chat system
 
-- 🏆 **Hackathon teams** needing rapid onchain game setup
-- 🎮 **Game developers** entering Web3 with production patterns
-- 🏢 **Studios** prototyping blockchain games with real UX
-- 📚 **Developers** learning Starknet + Dojo with comprehensive examples
+### Phase 4 - Economy & Polish
+- [ ] Resource marketplace (trade with other players)
+- [ ] $SIMULA token integration
+- [ ] NFT buildings (unique bonuses)
+- [ ] Seasonal events
+- [ ] Mobile app (React Native)
 
-## 🚀 Key Features
+## Contributing
 
-**⚡ Gaming-First UX**
-- Cartridge Controller integration eliminates wallet friction
-- Session policies enable uninterrupted gameplay
-- Optimistic updates provide instant feedback
-- Background blockchain confirmation
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-**🔧 Developer Experience**
-- Complete TypeScript integration end-to-end
-- Hot reload with contract changes
-- Comprehensive error handling patterns
-- Production deployment configurations
+## License
 
-**🏗️ Scalable Architecture**
-- Modular component design for easy extension
-- Reusable hooks for blockchain operations
-- Clean separation between UI and blockchain logic
-- Performance optimizations built-in
+MIT License - see LICENSE file for details
 
-## 🌟 Getting Started
+## Links
 
-1. **For Frontend Development:** Start with [Client README](./client/README.md)
-2. **For Backend Development:** Check [Contracts README](./contract/README.md)
-3. **For Complete Understanding:** Follow the [Integration Guide Series](./client/docs/)
-
-## 🔗 Links
-
-- **[Starknet](https://starknet.io)**
-- **[Dojo Engine](https://dojoengine.org)**
-- **[Cairo](https://cairo-lang.org)**
-- **[Cartridge](https://cartridge.gg)**
+- [Dojo Engine](https://dojoengine.org) - Onchain game framework
+- [Starknet](https://starknet.io) - Ethereum L2 network
+- [Cairo Book](https://book.cairo-lang.org/) - Cairo programming language
 
 ---
 
-**Built with ❤️ for the Starknet gaming community**
+Built with Dojo Engine on Starknet

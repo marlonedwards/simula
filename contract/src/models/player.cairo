@@ -3,10 +3,10 @@ use starknet::ContractAddress;
 use core::num::traits::zero::Zero;
 
 // Constants imports
-use full_starter_react::constants;
+use simula::constants;
 
 // Helpers import
-use full_starter_react::helpers::timestamp::Timestamp;
+use simula::helpers::timestamp::Timestamp;
 
 // Model
 #[derive(Copy, Drop, Serde, IntrospectPacked, Debug)]
@@ -93,7 +93,7 @@ pub impl ZeroablePlayerTrait of Zero<Player> {
 #[cfg(test)]
 mod tests {
     use super::{Player, ZeroablePlayerTrait, PlayerImpl, PlayerTrait, PlayerAssert};
-    use full_starter_react::constants;
+    use simula::constants;
     use starknet::{ContractAddress, contract_address_const};
 
     #[test]

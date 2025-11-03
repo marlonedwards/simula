@@ -6,10 +6,10 @@ use dojo::world::WorldStorage;
 use dojo::model::ModelStorage;
 
 // Models imports
-use full_starter_react::models::player::{Player, PlayerTrait};
+use simula::models::player::{Player, PlayerTrait};
 
 // Helpers import
-use full_starter_react::helpers::timestamp::Timestamp;
+use simula::helpers::timestamp::Timestamp;
 
 // Store struct
 #[derive(Copy, Drop)]
