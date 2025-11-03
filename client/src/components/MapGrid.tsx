@@ -15,7 +15,7 @@ interface Tile {
 }
 
 export default function MapGrid({ mapId, onTileClick, selectedTile }: MapGridProps) {
-  const MAP_SIZE = 30;
+  const MAP_SIZE = 10; // Changed from 30x30 to 10x10 to match blockchain map
   const [tiles, setTiles] = useState<Tile[][]>([]);
   const [hoveredTile, setHoveredTile] = useState<{x: number, y: number} | null>(null);
 
@@ -25,13 +25,14 @@ export default function MapGrid({ mapId, onTileClick, selectedTile }: MapGridPro
     for (let y = 0; y < MAP_SIZE; y++) {
       newTiles[y] = [];
       for (let x = 0; x < MAP_SIZE; x++) {
-        // Simple procedural generation for demo
-        const seed = x * 1000 + y;
-        const terrainValue = seed % 100;
-        let terrain = 0; // grass
-        if (terrainValue < 15) terrain = 1; // water
-        else if (terrainValue < 25) terrain = 2; // mountain
-        else if (terrainValue < 45) terrain = 3; // forest
+        // Simple procedural generation matching blockchain seed
+        const seed = (x * 17 + y * 31 + mapId * 13) % 100;
+        let terrain = 0; // grass (default - most tiles)
+
+        if (seed < 10) terrain = 1; // 10% water
+        else if (seed < 20) terrain = 2; // 10% mountain
+        else if (seed < 35) terrain = 3; // 15% forest
+        // 65% grass
 
         newTiles[y][x] = {
           x,
@@ -75,13 +76,12 @@ export default function MapGrid({ mapId, onTileClick, selectedTile }: MapGridPro
   };
 
   return (
-    <div className="overflow-auto max-h-[600px] bg-gray-900 p-2 rounded border-2 border-gray-600">
+    <div className="bg-gray-900 p-4 rounded border-2 border-gray-600">
       <div
         className="grid gap-[1px] bg-gray-950"
         style={{
           gridTemplateColumns: `repeat(${MAP_SIZE}, minmax(0, 1fr))`,
-          width: 'fit-content',
-          minWidth: '600px'
+          width: 'fit-content'
         }}
       >
         {tiles.map((row, y) =>
@@ -93,9 +93,9 @@ export default function MapGrid({ mapId, onTileClick, selectedTile }: MapGridPro
               <div
                 key={`${x}-${y}`}
                 className={`
-                  w-5 h-5 cursor-pointer transition-all border border-gray-800
+                  w-12 h-12 cursor-pointer transition-all border border-gray-800
                   ${getTileColor(tile, isHovered, isSelected)}
-                  hover:scale-110 hover:z-10
+                  hover:scale-105 hover:z-10
                 `}
                 onClick={() => handleTileClick(x, y)}
                 onMouseEnter={() => setHoveredTile({x, y})}

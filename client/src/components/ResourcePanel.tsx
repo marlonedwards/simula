@@ -125,7 +125,7 @@ export default function ResourcePanel({
           transition-all hover:scale-105 active:scale-95 text-sm
         "
       >
-        SYNC WITH BLOCKCHAIN
+        SAVE GAME
         {timeUntilSync && (
           <div className="text-xs mt-1 text-green-200">
             Next full hour: {timeUntilSync}

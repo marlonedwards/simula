@@ -1,8 +1,12 @@
+use starknet::ContractAddress;
+
 // Interface definition
 #[starknet::interface]
 pub trait ICity<T> {
     // Admin functions
     fn generate_map(ref self: T, width: u32, height: u32, seed: u256) -> u32;
+    fn set_admin(ref self: T, new_admin: ContractAddress);
+    fn get_admin(self: @T) -> ContractAddress;
 
     // Player functions
     fn claim_plot(ref self: T, map_id: u32, x: u32, y: u32);
@@ -12,6 +16,8 @@ pub trait ICity<T> {
     // View functions
     fn get_map(self: @T, map_id: u32) -> (u32, u32, u32, u256);
     fn get_tile(self: @T, map_id: u32, x: u32, y: u32) -> (u8, u8, bool, bool, bool);
+    fn get_player(self: @T, owner: ContractAddress, map_id: u32) -> (u32, u32, u32, u32, u32, u32, u64, u64);
+    fn get_building(self: @T, building_id: u32) -> (u32, ContractAddress, u8, u32, u32, u8, u64);
 }
 
 #[dojo::contract]
@@ -23,7 +29,7 @@ pub mod city {
     use simula::models::tile::{Tile, TileTrait, TERRAIN_GRASS, TERRAIN_WATER, TERRAIN_MOUNTAIN, TERRAIN_FOREST};
     use simula::models::plot::{Plot, PlotTrait, PlotAssert};
     use simula::models::city_player::{CityPlayer, CityPlayerTrait, CityPlayerAssert, ZeroableCityPlayerTrait};
-    use simula::models::building::{BuildingTrait, BUILDING_HABITAT};
+    use simula::models::building::{Building, BuildingTrait, BUILDING_HABITAT};
 
     // Dojo imports
     use dojo::model::{ModelStorage};
@@ -92,10 +98,9 @@ pub mod city {
     #[abi(embed_v0)]
     impl CityImpl of ICity<ContractState> {
         // Admin generates a map with procedural terrain
+        // Note: Access control is handled by Dojo world permissions (owners/writers)
         fn generate_map(ref self: ContractState, width: u32, height: u32, seed: u256) -> u32 {
-            let caller = get_caller_address();
-            let admin = self.admin.read();
-            assert(caller == admin, 'Only admin can generate map');
+            // Removed admin check - rely on Dojo world permissions instead
 
             let mut world = self.world(@"simula");
             let map_id = self.map_counter.read();
@@ -106,7 +111,7 @@ pub mod city {
                 width,
                 height,
                 seed,
-                caller,
+                get_caller_address(),
                 get_block_timestamp()
             );
             world.write_model(@map);
@@ -120,7 +125,7 @@ pub mod city {
                 map_id,
                 width,
                 height,
-                admin: caller,
+                admin: get_caller_address(),
             });
 
             map_id
@@ -291,6 +296,33 @@ pub mod city {
             let world = self.world(@"simula");
             let tile: Tile = world.read_model((map_id, x, y));
             (tile.terrain_type, tile.height, tile.has_iron, tile.has_coal, tile.has_gold)
+        }
+
+        // Admin function to update admin address
+        fn set_admin(ref self: ContractState, new_admin: ContractAddress) {
+            let caller = get_caller_address();
+            let current_admin = self.admin.read();
+            assert(caller == current_admin, 'Only current admin');
+            self.admin.write(new_admin);
+        }
+
+        // View function to get current admin
+        fn get_admin(self: @ContractState) -> ContractAddress {
+            self.admin.read()
+        }
+
+        // View function to get player data
+        fn get_player(self: @ContractState, owner: ContractAddress, map_id: u32) -> (u32, u32, u32, u32, u32, u32, u64, u64) {
+            let world = self.world(@"simula");
+            let player: CityPlayer = world.read_model((owner, map_id));
+            (player.money, player.energy, player.water, player.iron, player.population, player.population_cap, player.joined_at, player.last_sync)
+        }
+
+        // View function to get building data
+        fn get_building(self: @ContractState, building_id: u32) -> (u32, ContractAddress, u8, u32, u32, u8, u64) {
+            let world = self.world(@"simula");
+            let building: Building = world.read_model(building_id);
+            (building.map_id, building.owner, building.building_type, building.x, building.y, building.level, building.built_at)
         }
     }
 

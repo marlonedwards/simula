@@ -1,5 +1,5 @@
 // hooks/useStarknetConnect.ts
-import { useConnect, useAccount, useDisconnect } from "@starknet-react/core";
+import { useConnect, useAccount, useDisconnect, Connector } from "@starknet-react/core";
 import { useState, useCallback } from "react";
 
 export function useStarknetConnect() {
@@ -9,19 +9,21 @@ export function useStarknetConnect() {
   const [hasTriedConnect, setHasTriedConnect] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
 
-  const handleConnect = useCallback(async () => {
-    const connector = connectors[0]; // Cartridge connector
-    if (!connector) {
+  const handleConnect = useCallback(async (connector?: Connector) => {
+    // Use provided connector or default to first available
+    const selectedConnector = connector || connectors[0];
+
+    if (!selectedConnector) {
       console.error("No connector found");
       return;
     }
-    
+
     try {
       setIsConnecting(true);
       setHasTriedConnect(true);
-      console.log("🔗 Attempting to connect controller...");
-      await connect({ connector });
-      console.log("✅ controller connected successfully");
+      console.log("🔗 Attempting to connect wallet:", selectedConnector.id);
+      await connect({ connector: selectedConnector });
+      console.log("✅ Wallet connected successfully");
     } catch (error) {
       console.error("❌ Connection failed:", error);
     } finally {
@@ -48,13 +50,14 @@ export function useStarknetConnect() {
     availableConnectors: connectors.length
   });
 
-  return { 
-    status, 
+  return {
+    status,
     address,
     isConnecting,
-    hasTriedConnect, 
+    hasTriedConnect,
     handleConnect,
     handleDisconnect,
-    setHasTriedConnect 
+    setHasTriedConnect,
+    connectors,
   };
 }

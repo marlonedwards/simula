@@ -4,6 +4,8 @@ import {
     jsonRpcProvider,
     StarknetConfig,
     starkscan,
+    argent,
+    braavos,
 } from "@starknet-react/core";
 import cartridgeConnector from "../config/cartridgeConnector";
 
@@ -32,11 +34,18 @@ export default function StarknetProvider({ children }: PropsWithChildren) {
         ? [mainnet] 
         : [sepolia];
 
+    // Create wallet connectors
+    const connectors = [
+        cartridgeConnector,
+        argent(),
+        braavos(),
+    ];
+
     return (
         <StarknetConfig
             autoConnect
             chains={chains}
-            connectors={[cartridgeConnector]}
+            connectors={connectors}
             explorer={starkscan}
             provider={provider}
         >

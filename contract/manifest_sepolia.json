@@ -1480,7 +1480,7 @@
   "contracts": [
     {
       "address": "0x6cee424a3a9bc50a46acc8df7b49d19e7c1f690f704fd8931c1821053b83606",
-      "class_hash": "0x4ceb9f75ed3331c13bbf467e69e9e7054eb03f19a028cc492285aece7be3cfb",
+      "class_hash": "0x4b734af121d23b9980e796a3adc71db8d734122e93c10b6e59c584168f7b1c4",
       "abi": [
         {
           "type": "impl",
@@ -1602,6 +1602,29 @@
             },
             {
               "type": "function",
+              "name": "set_admin",
+              "inputs": [
+                {
+                  "name": "new_admin",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "get_admin",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
               "name": "claim_plot",
               "inputs": [
                 {
@@ -1692,6 +1715,42 @@
               "outputs": [
                 {
                   "type": "(core::integer::u8, core::integer::u8, core::bool, core::bool, core::bool)"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_player",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "map_id",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "(core::integer::u32, core::integer::u32, core::integer::u32, core::integer::u32, core::integer::u32, core::integer::u32, core::integer::u64, core::integer::u64)"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "get_building",
+              "inputs": [
+                {
+                  "name": "building_id",
+                  "type": "core::integer::u32"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "(core::integer::u32, core::starknet::contract_address::ContractAddress, core::integer::u8, core::integer::u32, core::integer::u32, core::integer::u8, core::integer::u64)"
                 }
               ],
               "state_mutability": "view"
@@ -1940,6 +1999,7 @@
       "systems": [
         "dojo_init",
         "generate_map",
+        "set_admin",
         "claim_plot",
         "build_structure",
         "collect_resources",
