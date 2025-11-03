@@ -58,8 +58,7 @@ A fully onchain multiplayer city builder where players compete to claim plots on
 ✅ Buildings (type, position, owner, timestamp)
 
 **What's Local (Temporary):**
-⚠️ Building display (buildings are saved onchain but not yet queried back)
-⚠️ Resource calculations between syncs
+⚠️ Resource display between syncs
 
 **How It Works:**
 1. **Claim Plot** → Creates player account + grants 1000 gold onchain
