@@ -16,7 +16,7 @@ A fully onchain multiplayer city builder where players compete to claim plots on
 
 - **Smart Contracts**: Cairo 2.12.2 + Dojo 1.7.1
 - **Frontend**: React + TypeScript + Vite
-- **Wallet**: ArgentX / Braavos
+- **Session Management**: Cartridge, ArgentX / Braavos
 - **Blockchain**: Starknet Sepolia Testnet
 
 ## 🎯 How To Play
